@@ -31,15 +31,15 @@ jobs:
           start: npm run start-prod
           wait-on: http://localhost:5000
       - name: deploy
-##        if: ${{ github.event_name == 'push' && !(contains(join(toJson(github.event.commits.*.message)), '#skip')) }}
+        #if: ${{ github.event_name == 'push' && !(contains(join(toJson(github.event.commits.*.message)), '#skip')) }}
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
             heroku_api_key: ${{secrets.HEROKU_API_KEY}}
             heroku_app_name: "quiet-sands-09939"
             heroku_email: "juhp944@gmail.com"
-##            healthcheck: "https://quiet-sands-09939.herokuapp.com/health"
-##            checkstring: "ok"
-##            rollbackonhealthcheckfailed: true
+            healthcheck: "https://quiet-sands-09939.herokuapp.com/health"
+            checkstring: "ok"
+            rollbackonhealthcheckfailed: true
       - name: failed build
         if: ${{ failure() && github.event_name == 'push' && !(contains(join(toJson(github.event.commits.*.message)), '#skip')) }}
         uses: rjstone/discord-webhook-notify@v1
