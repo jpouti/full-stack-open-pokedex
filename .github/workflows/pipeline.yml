@@ -41,18 +41,16 @@ jobs:
             checkstring: "ok"
             rollbackonhealthcheckfailed: true
       - name: failed build
-        if: ${{ github.event_name == 'push' && !(contains(join(toJson(github.event.commits.*.message)), '#skip')) }}
+        if: ${{ failure() && github.event_name == 'push' && !(contains(join(toJson(github.event.commits.*.message)), '#skip')) }}
         uses: rjstone/discord-webhook-notify@v1
-        if: failure()
         with:
           severity: error
           details: Build failed
           text: Build failed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name:
-        if: ${{ github.event_name == 'push' && !(contains(join(toJson(github.event.commits.*.message)), '#skip')) }}
+        if: ${{ success() && github.event_name == 'push' && !(contains(join(toJson(github.event.commits.*.message)), '#skip')) }}
         uses: rjstone/discord-webhook-notify@v1
-        if: success()
         with:
           severity: info
           description: "https://quiet-sands-09939.herokuapp.com"
